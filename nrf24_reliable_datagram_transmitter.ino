@@ -51,6 +51,19 @@ uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
 
 void loop()
 {
+  //map the readings we get from the moisture sensor to something we can send
+  for(int k=0;k<=sizeof(k);k++){
+    currentMoisture[k] = map(analogRead(sensorPins[k+1]), 0, 1028, 0, 255);
+  }
+  //if the current moistre of the plant is below a threshhold then we are to dry
+  for(int l=0;l<=sizeof(currentMoisture);l++){
+    if(currentMoisture[l] < tooDryValue[l]){
+      isTooDry = true;
+    }
+    else{
+      isTooDry = false;
+    }
+  }
   data[0] = map(analogRead(sensorPins[0]), 0, 950, 100, 0);
   data[1] = isTooDry;
   data[2] = currentMoisture[0];

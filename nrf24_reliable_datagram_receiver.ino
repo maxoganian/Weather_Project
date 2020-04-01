@@ -11,6 +11,8 @@
 #include <RHReliableDatagram.h>
 #include <RH_NRF24.h>
 #include <SPI.h>
+#include <LiquidCrystal.h>
+#include <Wire.h>
 
 #define CLIENT_ADDRESS 1
 #define SERVER_ADDRESS 2
@@ -22,11 +24,23 @@ RH_NRF24 driver;
 // Class to manage message delivery and receipt, using the driver declared above
 RHReliableDatagram manager(driver, SERVER_ADDRESS);
 
+//setup LCD pins
+LiquidCrystal lcd(9,7,5,4,3,2);
+
 void setup() 
 {
   Serial.begin(9600);
-  if (!manager.init())
+  // Setup wire transmition as master
+  Wire.begin();
+  //begin LCD screen
+  lcd.begin(16, 2);
+  //clear LCD display
+  lcd.clear();
+  if (!manager.init()){
     Serial.println("init failed");
+    lcd.setCursor(0,0);
+    lcd.print("init failed");
+  }
   // Defaults after init are 2.402 GHz (channel 2), 2Mbps, 0dBm
 }
 
@@ -45,10 +59,35 @@ void loop()
     if (manager.recvfromAck(buf, &len, &from))
     {
       Serial.print("got request from : 0x");
-      Serial.print(from, HEX);
+      Serial.println(from, HEX);
       Serial.print(": ");
+      Serial.print("Light: ");
       Serial.println(buf[0]);
-
+      Serial.print("isTooDry: ");
+      Serial.println(buf[1]);
+      Serial.print("Moisture: ");
+      Serial.println(buf[2]);
+      Serial.print("To Dry Value: ");
+      Serial.println(buf[3]);
+      //print values to LCD display
+      lcd.setCursor(0,0);
+      lcd.print("Sun: H20: TDV:");
+      lcd.setCursor(0,1);
+      lcd.print("                ");
+      lcd.setCursor(0,1);
+      lcd.print(buf[0]);
+      lcd.setCursor(5,1);
+      lcd.print(buf[2]);
+      lcd.setCursor(10,1);
+      lcd.print(buf[3]);
+      for(int i=0;i<=3;i++){  
+        Serial.print("sending wire ");
+        Serial.println(i);
+        Wire.beginTransmission(9);
+        Wire.write(buf[i]);
+        delay(100);
+        Wire.endTransmission();
+      } 
       // Send a reply back to the originator client
       if (!manager.sendtoWait(data, sizeof(data), from))
         Serial.println("sendtoWait failed");
