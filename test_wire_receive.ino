@@ -23,16 +23,24 @@ void loop()
 {
   delay(100);
 }
+
+// we are grouping our data by 4 ints
 int data[4];
+
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany)
 {
   //for(int i = 0; i++; i < 5) // loop through all but the last
     
+    // We are getting one of the four data
+    // data bytes we want
     data[i] = Wire.read(); // receive byte as a character
     Serial.println(data[i]);         // print the character
     i++;
+  
+    // check if that was the last of our data group;
+    // if so, reset the index to the beginning
     if(i > 3){ 
       Serial.println("----------");
       i = 0;
