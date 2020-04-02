@@ -21,7 +21,8 @@ RH_NRF24 driver;
 
 // Class to manage message delivery and receipt, using the driver declared above
 RHReliableDatagram manager(driver, CLIENT_ADDRESS);
-
+//variable for the number of moisture sensors
+int numMoistSensors = 2;
 //define sensor pins
 byte sensorPins[] = {A0, A1, A2};
 //define pin the button is plugged into
@@ -40,36 +41,58 @@ void setup()
   Serial.begin(9600);
   if (!manager.init())
     Serial.println("init failed");
+  else
+    Serial.println("init success");
 
    
   // Defaults after init are 2.402 GHz (channel 2), 2Mbps, 0dBm
 }
 
-uint8_t data[4];
+uint8_t data[6];
 // Dont put this on the stack:
 uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
 
 void loop()
 {
+  //see if a button has been pressed
+  for(int j=0;j<=numMoistSensors;j++){
+    buttonPressed[0] = digitalRead(buttonPin[0]);
+  }
+  buttonPressed[1] = digitalRead(buttonPin[1]);
   //map the readings we get from the moisture sensor to something we can send
-  for(int k=0;k<=sizeof(k);k++){
+  for(int k=0;k<=numMoistSensors;k++){
     currentMoisture[k] = map(analogRead(sensorPins[k+1]), 0, 1028, 0, 255);
   }
-  //if the current moistre of the plant is below a threshhold then we are to dry
-  for(int l=0;l<=sizeof(currentMoisture);l++){
-    if(currentMoisture[l] < tooDryValue[l]){
-      isTooDry = true;
-    }
-    else{
-      isTooDry = false;
-    }
+  //if the button is pressed set a new to dry value
+  //for(int m=0;m<=numMoistSensors; m++){
+  if(buttonPressed[0] == HIGH){
+    tooDryValue[0] = currentMoisture[0];
   }
+  if(buttonPressed[1] == HIGH){
+    tooDryValue[1] = currentMoisture[1];
+  }
+  //}
+  //if the current moistre of the plant is below a threshhold then we are to dry
+  //for(int l=0;l<=numMoistSensors;l++){
+  if(currentMoisture[0] < tooDryValue[0] || currentMoisture[1] < tooDryValue[1]){
+    isTooDry = true;
+  }
+  else{
+    isTooDry = false;
+  }
+  //} 
   data[0] = map(analogRead(sensorPins[0]), 0, 950, 100, 0);
   data[1] = isTooDry;
   data[2] = currentMoisture[0];
   data[3] = tooDryValue[0];
+  data[4] = currentMoisture[1];
+  data[5] = tooDryValue[1];
   Serial.println("Sending to nrf24_reliable_datagram_server");
-    
+  Serial.print("Button Value: ");
+  Serial.println(buttonPressed[0]);  
+  Serial.print("Button Value2: ");
+  Serial.println(buttonPressed[1]);  
+  
   // Send a message to manager_server
   if (manager.sendtoWait(data, sizeof(data), SERVER_ADDRESS))
   {

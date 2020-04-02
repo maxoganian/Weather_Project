@@ -17,6 +17,8 @@
 #define CLIENT_ADDRESS 1
 #define SERVER_ADDRESS 2
 
+uint8_t wireData[7]; 
+int ledPin = 6;
 // Singleton instance of the radio driver
 RH_NRF24 driver;
 // RH_NRF24 driver(8, 7);   // For RFM73 on Anarduino Mini
@@ -36,6 +38,8 @@ void setup()
   lcd.begin(16, 2);
   //clear LCD display
   lcd.clear();
+  //led pin
+  pinMode(ledPin, OUTPUT);
   if (!manager.init()){
     Serial.println("init failed");
     lcd.setCursor(0,0);
@@ -60,7 +64,6 @@ void loop()
     {
       Serial.print("got request from : 0x");
       Serial.println(from, HEX);
-      Serial.print(": ");
       Serial.print("Light: ");
       Serial.println(buf[0]);
       Serial.print("isTooDry: ");
@@ -69,6 +72,10 @@ void loop()
       Serial.println(buf[2]);
       Serial.print("To Dry Value: ");
       Serial.println(buf[3]);
+      Serial.print("Moisture2: ");
+      Serial.println(buf[4]);
+      Serial.print("To Dry Value2: ");
+      Serial.println(buf[5]);
       //print values to LCD display
       lcd.setCursor(0,0);
       lcd.print("Sun: H20: TDV:");
@@ -80,11 +87,22 @@ void loop()
       lcd.print(buf[2]);
       lcd.setCursor(10,1);
       lcd.print(buf[3]);
-      for(int i=0;i<=3;i++){  
+      if(buf[1])
+        digitalWrite(ledPin, HIGH);
+      else
+        digitalWrite(ledPin, LOW);
+      wireData[0] = buf[0];
+      wireData[1] = buf[1];
+      wireData[2] = buf[2]; 
+      wireData[3] = buf[3];
+      wireData[4] = buf[4];
+      wireData[5] = buf[5];
+      wireData[6] = 100;
+      for(int i=0;i<=6;i++){
         Serial.print("sending wire ");
         Serial.println(i);
         Wire.beginTransmission(9);
-        Wire.write(buf[i]);
+        Wire.write(wireData[i]);
         delay(100);
         Wire.endTransmission();
       } 
