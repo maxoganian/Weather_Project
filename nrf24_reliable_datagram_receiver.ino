@@ -19,6 +19,8 @@
 
 uint8_t wireData[7]; 
 int ledPin = 6;
+byte potPin = A0;
+int potValue = 0;
 // Singleton instance of the radio driver
 RH_NRF24 driver;
 // RH_NRF24 driver(8, 7);   // For RFM73 on Anarduino Mini
@@ -40,6 +42,8 @@ void setup()
   lcd.clear();
   //led pin
   pinMode(ledPin, OUTPUT);
+  //potentiometer pin
+  pinMode(potPin, INPUT);
   if (!manager.init()){
     Serial.println("init failed");
     lcd.setCursor(0,0);
@@ -62,6 +66,7 @@ void loop()
     uint8_t from;
     if (manager.recvfromAck(buf, &len, &from))
     {
+      potValue = analogRead(potPin);
       Serial.print("got request from : 0x");
       Serial.println(from, HEX);
       Serial.print("Light: ");
@@ -77,16 +82,30 @@ void loop()
       Serial.print("To Dry Value2: ");
       Serial.println(buf[5]);
       //print values to LCD display
-      lcd.setCursor(0,0);
-      lcd.print("Sun: H20: TDV:");
-      lcd.setCursor(0,1);
-      lcd.print("                ");
-      lcd.setCursor(0,1);
-      lcd.print(buf[0]);
-      lcd.setCursor(5,1);
-      lcd.print(buf[2]);
-      lcd.setCursor(10,1);
-      lcd.print(buf[3]);
+      if(potValue < 360){
+        lcd.setCursor(0,0);
+        lcd.print("M1 Sun: H20: TDV:");
+        lcd.setCursor(0,1);
+        lcd.print("                ");
+        lcd.setCursor(3,1);
+        lcd.print(buf[0]);
+        lcd.setCursor(8,1);
+        lcd.print(buf[2]);
+        lcd.setCursor(13,1);
+        lcd.print(buf[3]);
+      }
+      if(potValue > 360 && potValue < 720){
+        lcd.setCursor(0,0);
+        lcd.print("M2 Sun: H20: TDV:");
+        lcd.setCursor(0,1);
+        lcd.print("                ");
+        lcd.setCursor(3,1);
+        lcd.print(buf[0]);
+        lcd.setCursor(8,1);
+        lcd.print(buf[4]);
+        lcd.setCursor(13,1);
+        lcd.print(buf[5]);
+      }
       if(buf[1])
         digitalWrite(ledPin, HIGH);
       else
@@ -97,7 +116,20 @@ void loop()
       wireData[3] = buf[3];
       wireData[4] = buf[4];
       wireData[5] = buf[5];
-      wireData[6] = 100;
+      wireData[6] = 99;
+      if(wireData[0]==99)
+        wireData[0]=98;
+      if(wireData[1]==99)
+        wireData[1]=98;
+      if(wireData[2]==99)
+        wireData[2]=98;
+      if(wireData[3]==99)
+        wireData[3]=98;
+      if(wireData[4]==99)
+        wireData[4]=98;
+      if(wireData[5]==99)
+        wireData[5]=98;
+      
       for(int i=0;i<=6;i++){
         Serial.print("sending wire ");
         Serial.println(i);

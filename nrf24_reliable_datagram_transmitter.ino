@@ -35,7 +35,8 @@ int tooDryValue[] = {0, 0};
 int currentMoisture[] = {10, 10};
 //boolean to tell us if a variable is to low
 boolean isTooDry = false;
-
+//int for the value of the light sensor
+int lightValue = 0;
 void setup() 
 {
   Serial.begin(9600);
@@ -54,6 +55,9 @@ uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
 
 void loop()
 {
+  lightValue = map(analogRead(sensorPins[0]), 0, 1028, 100, 0);
+  if(lightValue > 100)
+  
   //see if a button has been pressed
   for(int j=0;j<=numMoistSensors;j++){
     buttonPressed[0] = digitalRead(buttonPin[0]);
@@ -61,7 +65,7 @@ void loop()
   buttonPressed[1] = digitalRead(buttonPin[1]);
   //map the readings we get from the moisture sensor to something we can send
   for(int k=0;k<=numMoistSensors;k++){
-    currentMoisture[k] = map(analogRead(sensorPins[k+1]), 0, 1028, 0, 255);
+    currentMoisture[k] = map(analogRead(sensorPins[k+1]), 0, 1028, 0, 100);
   }
   //if the button is pressed set a new to dry value
   //for(int m=0;m<=numMoistSensors; m++){
@@ -81,7 +85,7 @@ void loop()
     isTooDry = false;
   }
   //} 
-  data[0] = map(analogRead(sensorPins[0]), 0, 950, 100, 0);
+  data[0] = lightValue;
   data[1] = isTooDry;
   data[2] = currentMoisture[0];
   data[3] = tooDryValue[0];
