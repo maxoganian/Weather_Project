@@ -15,7 +15,7 @@
 #include <SD.h>
 
 const int chipSelect = 10;
-
+unsigned long timeSinceStart = 0;
 void setup()
 {
   Wire.begin(9);                // join i2c bus with address #4
@@ -42,13 +42,11 @@ int data[7];
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany)
 {
-  //for(int i = 0; i++; i < 5) // loop through all but the last
+    timeSinceStart = millis()/1000;
     
     data[i] = Wire.read(); // receive byte as a character
     //.print("0");
     //Serial.println(i);
-    Serial.println(data[i]);         // print the character
-    i++;
     // make a string for assembling the data to log:
     String dataString = "";
   
@@ -56,35 +54,61 @@ void receiveEvent(int howMany)
     dataString += String(data[i]);
      // open the file. note that only one file can be open at a time,
     // so you have to close this one before opening another.
-    File dataFile = SD.open("datalog3.txt", FILE_WRITE);
+    File dataFile = SD.open("datalog4.txt", FILE_WRITE);
   
     // if the file is available, write to it:
     if (dataFile) {
-      if(i == 0)
+      if(i == 0){
+        dataFile.print("Seconds since start: ");
+        dataFile.println(timeSinceStart);
+        Serial.print("Seconds since start: ");
+        Serial.println(timeSinceStart);
+       
         dataFile.print("Light: ");
-      if(i == 1)
+        Serial.print("Light: ");
+      }
+      if(i == 1){
         dataFile.print("isTooDry: ");
-      if(i == 2)
+        Serial.print("isTooDry: ");    
+      }
+      if(i == 2){
         dataFile.print("Moisture 1: ");
-      if(i == 3)
+        Serial.print("Moisture 1: ");
+      }
+      if(i == 3){
         dataFile.print("Too Dry Value 1: ");
-      if(i == 4)
+        Serial.print("Too Dry Value 1: ");
+      }
+      if(i == 4){
         dataFile.print("Moisture 2: ");
-      if(i == 5)
+        Serial.print("Moisture 2: ");
+      }
+      if(i == 5){
         dataFile.print("Too Dry Value 2: ");
-      if(i == 6)
-        dataFile.print("------------");
-      
-      dataFile.println(dataString);
+        Serial.print("Too Dry Value 2: ");
+      }
+      if(i == 6){
+        dataFile.println("------------");
+        Serial.println("------------");
+      }      
+      if(i != 6){
+        dataFile.println(dataString);
+        Serial.println(dataString);         // print the character
+      }  
+//      Serial.print("i = ");
+//      Serial.println(i);
       dataFile.close();
-      // print to the serial port too:
-      Serial.println("Saving");
     }
     // if the file isn't open, pop up an error:
     else {
       Serial.println("error opening datalog.txt");
     }
-    if(i > 6){ 
+
+    if(data[i]==99){
+      i=6;
+    }
+    i++;
+    if(i>6){ 
       i = 0;
     }
 }
