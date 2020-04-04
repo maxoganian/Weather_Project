@@ -2,13 +2,23 @@
 
 ## Intro
 
-Hey, what is this project all about?
+Hey, what is this project all about?  What's the goal?
 
 Here's what it looked like at first:
 
 <img src="setup_early_days.jpg" alt="alt text" width="500">
  
- 
+## Materials
+
+Arduino Mega: https://store.arduino.cc/usa/mega-2560-r3
+Arduino:
+Wireless transmitters and receivers:
+SD Card reader:
+
+### Home made moisture sensor
+
+Here's how I built this:
+
 ## Wiring
 
 Wiring setup as of 4-4-20:
@@ -83,3 +93,10 @@ DO  12
 DI  11
 CS  10
 
+## Software
+
+Each of the *.ino files runs on a single board:
+
+  * what_file_is_this.ino: this runs on which board?  What does it do more or less?
+  * other_file.ino: runs on some other board?
+  
