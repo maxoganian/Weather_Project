@@ -4,7 +4,7 @@
 
 Hey, what is this project all about?
 
-!setup_early_days.jpg
+![alt text](setup_early_days.jpg)
 
 ## Wiring
 
