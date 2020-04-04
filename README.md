@@ -20,6 +20,7 @@ The LCD display is hooked up to pins 22-27:
 the LCD pin out is as follows (LCD pins start nearest the corner):
 
 LCD:  Arduino:
+
 1     GND
 2     5v
 3     Potentiometer
