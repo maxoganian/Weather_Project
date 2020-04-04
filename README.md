@@ -5,7 +5,7 @@
 Hey, what is this project all about?
 
 ![alt text](setup_early_days.jpg | width=100)
-
+ <img src="setup_early_days.jpg" alt="alt text" width="100">
 ## Wiring
 
 Wiring setup as of 4-4-20
