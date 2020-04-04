@@ -19,6 +19,11 @@ The LCD display is hooked up to pins 22-27:
 
 the LCD pin out is as follows (LCD pins start nearest the corner):
 
+Try this list:
+  * a b
+  * c d
+  * e g
+  
 LCD:  Arduino:
 
 1     GND
