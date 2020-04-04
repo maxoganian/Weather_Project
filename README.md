@@ -1,3 +1,13 @@
+# Weather_Project
+
+## Intro
+
+Hey, what is this project all about?
+
+!setup_early_days.jpg
+
+## Wiring
+
 Wiring setup as of 4-4-20
 Everthing pretaining to the plants and moisture sensor is taking place on the Arduio Mega, as it has numerous input/output pins.
 The LCD display is hooked up to pins 22-27:
