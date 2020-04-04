@@ -95,8 +95,17 @@ CS  10
 
 ## Software
 
+### Data Aquisition
+
 Each of the *.ino files runs on a single board:
 
   * what_file_is_this.ino: this runs on which board?  What does it do more or less?
   * other_file.ino: runs on some other board?
   
+### Data Analysis
+
+plotData.py will create plots for the different sensors logged onto the SD card.  See code for installation and usage.
+Here's an example plot:
+
+
+<img src="Moisture 1.png" alt="alt text" width="500">
