@@ -19,29 +19,25 @@ The LCD display is hooked up to pins 22-27:
 
 the LCD pin out is as follows (LCD pins start nearest the corner):
 
-Try this list:
-  * a b
-  * c d
-  * e g
   
 LCD:  Arduino:
 
-1     GND
-2     5v
-3     Potentiometer
-4     22
-5     GND
-6     23
-7     Empty
-8     Empty
-9     Empty
-10    Empty
-11    24
-12    25
-13    26
-14    27
-15    5v
-16    GND
+  * 1     GND
+  * 2     5v
+  * 3     Potentiometer
+  * 4     22
+  * 5     GND
+  * 6     23
+  * 7     Empty
+  * 8     Empty
+  * 9     Empty
+  * 10    Empty
+  * 11    24
+  * 12    25
+  * 13    26
+  * 14    27
+  * 15    5v
+  * 16    GND
 
 The Moisture sensors have 1.25 in long and 5/8 in apart
 One of the prongs goes to 5v the other goes to its analog pin and, through a 10k resistor, to GND
