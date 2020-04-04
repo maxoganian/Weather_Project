@@ -11,10 +11,14 @@ Here's what it looked like at first:
  
 ## Wiring
 
-Wiring setup as of 4-4-20
+Wiring setup as of 4-4-20:
+
 Everthing pretaining to the plants and moisture sensor is taking place on the Arduio Mega, as it has numerous input/output pins.
+
 The LCD display is hooked up to pins 22-27:
+
 the LCD pin out is as follows (LCD pins start nearest the corner):
+
 LCD:  Arduino:
 1     GND
 2     5v
@@ -33,7 +37,7 @@ LCD:  Arduino:
 15    5v
 16    GND
 
-The Moisture sensors hve 1.25 in long and 5/8 in apart
+The Moisture sensors have 1.25 in long and 5/8 in apart
 One of the prongs goes to 5v the other goes to its analog pin and, through a 10k resistor, to GND
 
 The wireless nrf24 is connected to the specialty SPI pins on the Arduino Mega. 
