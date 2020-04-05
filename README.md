@@ -8,12 +8,16 @@ Here's what it looked like at first:
 
 <img src="setup_early_days.jpg" alt="alt text" width="500">
  
+As of April 5 2020:
+
+<img src="weather_project_5apr20.jpg" alt="alt text" width="500">
+
 ## Materials
 
-Arduino Mega: https://store.arduino.cc/usa/mega-2560-r3
-Arduino:
-Wireless transmitters and receivers:
-SD Card reader:
+  * Arduino Mega: https://store.arduino.cc/usa/mega-2560-r3
+  * Arduino:
+  * Wireless transmitters and receivers:
+  * SD Card reader:
 
 ### Home made moisture sensor
 
@@ -54,6 +58,7 @@ One of the prongs goes to 5v the other goes to its analog pin and, through a 10k
 
 The wireless nrf24 is connected to the specialty SPI pins on the Arduino Mega. 
 if the nrf24's pins were numbered as follows,
+
  ____________
 |            |
 |            |
@@ -61,37 +66,45 @@ if the nrf24's pins were numbered as follows,
 |            |
 |    1 2 3 4 |
 |____5_6_7_8_|
+
+
 Then the wiring is:
+
 nrf24: Arduino:
-1      Empty
-2      51
-3      10
-4      3.3v
-5      50
-6      52
-7      8
-8      GND
+
+  * 1      Empty
+  * 2      51
+  * 3      10
+  * 4      3.3v
+  * 5      50
+  * 6      52
+  * 7      8
+  * 8      GND
 
 The potentiometer that controls the printouts of the serial moniter is connected to pin A15
 
 One of the light sensors prngs goes straight to ground. The other goes straight to pin A0, and through a 10k resistor to 5v.
 
 The SparkFun RedBoard (RedBoard ia an Arduino Uno for all intents and purposes) is connected to the Arduino Mega by:
+
 RedBoard: Mega:
-VIN       5v
-GND       GND
-A5        21
-A4        20
+
+  * VIN       5v
+  * GND       GND
+  * A5        21
+  * A4        20
 
 The RedBoard is connected to the SD card writing breakout board by:
+
 SD:  RedBoard:
-5v   5v
-3v   Empty
-GND  GND
-CLK 13
-DO  12
-DI  11
-CS  10
+
+  * 5v   5v
+  * 3v   Empty
+  * GND  GND
+  * CLK 13
+  * DO  12
+  * DI  11
+  * CS  10
 
 ## Software
 
