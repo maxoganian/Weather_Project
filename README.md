@@ -111,6 +111,33 @@ SD:  RedBoard:
   * DI  11
   * CS  10
 
+### Weather Station
+The weather station has the same transmitter as the Arduino Mega.
+However as the Weather t=station uses an Arduino Uno not a Mega, the SPI pins are different.
+____________
+|            |
+|            |
+|            |
+|            |
+|    1 2 3 4 |
+|____5_6_7_8_|
+
+
+Then the wiring is:
+
+nrf24: Arduino:
+
+  * 1      Empty
+  * 2      11
+  * 3      10
+  * 4      3.3v
+  * 5      12
+  * 6      13
+  * 7      8
+  * 8      GND
+
+The transmitter kept getting unplugged so I soldered a small "sheild" for the Uno that holds its important wiring. This includes the wiring of the sensors and the transmitter irself. The homade anemoneter consists simply of a motor attatched to ground and an anlog pin. The enrire setup is housed in a yogurt container for wether proofing.
+
 ## Software
 
 ### Data Aquisition
