@@ -12,16 +12,21 @@ As of April 5 2020:
 
 <img src="weather_project_5apr20.jpg" alt="alt text" width="500">
 
+Weather station:
+
+<img src="image0.jpeg" alt="alt text" width="500">
+
 ## Materials
 
   * Arduino Mega: https://store.arduino.cc/usa/mega-2560-r3
-  * Arduino:
-  * Wireless transmitters and receivers:
-  * SD Card reader:
+  * Arduino Uno:
+  * Wireless transmitters and receivers: https://www.amazon.com/Makerfire-Arduino-NRF24L01-Wireless-Transceiver/dp/B00O9O868G
+  * SD Card reader: https://www.adafruit.com/product/254
 
 ### Home made moisture sensor
 
 Here's how I built this:
+The moisture sensor is very simple. It consists of two metal prongs, I use 14 baud copper wire, that are spaced a consistant distance apart and in length. One of the prongs goes straight to 5v and the other goes atraight to the chosen analog input pin, and through a 10k resistor to ground. 
 
 ## Wiring
 
@@ -112,8 +117,9 @@ SD:  RedBoard:
 
 Each of the *.ino files runs on a single board:
 
-  * what_file_is_this.ino: this runs on which board?  What does it do more or less?
-  * other_file.ino: runs on some other board?
+  * nrf24_reliable_datagram_receiver.ino: This runs on the Arduino Mega. This code takes in input from the moisture and light sensor. It   writes the data to the Sparkfun Red board. This code also receives the wireless data from the weather station. It prints out all of the data it receives to one of two LCD displays, one for the weather station and one for the "garden" station. 
+  * wire_receive.ino: This code runs on the Sparkfun RedBoard. The RedBoard is essentially an arduino uno it is just produced by Sparkfun. This code receives the data written to it and then saves it to an SD card. The arduino Mega can't save the data due to limtations on the number of SPI ports it has. 
+  * nrf24_reliable_datagram_transmitter.ino: This runs on the Weather Station's Arduino Uno. This receives data from the Weather Station's various sensors and the transmitts the data wirelessly to the Arduino Mega.
   
 ### Data Analysis
 
