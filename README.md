@@ -6,15 +6,15 @@ This goal of this project was to created automated weather stations and plant wa
 
 Here's what it looked like at first:
 
-<img src="setup_early_days.jpg" alt="alt text" width="500">
+<img src="images/setup_early_days.jpg" alt="alt text" width="500">
  
 As of April 5 2020:
 
-<img src="weather_project_5apr20.jpg" alt="alt text" width="500">
+<img src="images/weather_project_5apr20.jpg" alt="alt text" width="500">
 
 Weather station:
 
-<img src="image0.jpeg" alt="alt text" width="500">
+<img src="images/image0.jpeg" alt="alt text" width="500">
 
 ## Materials
 
@@ -154,4 +154,4 @@ plotData.py will create plots for the different sensors logged onto the SD card.
 Here's an example plot:
 
 
-<img src="Moisture 1.png" alt="alt text" width="500">
+<img src="images/Moisture 1.png" alt="alt text" width="500">
