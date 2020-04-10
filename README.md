@@ -2,7 +2,7 @@
 
 ## Intro
 
-Hey, what is this project all about?  What's the goal?
+This goal of this project was to created automated weather stations and plant waterers.
 
 Here's what it looked like at first:
 
