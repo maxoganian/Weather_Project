@@ -2,31 +2,66 @@
 
 ## Intro
 
-This goal of this project was to created automated weather stations and plant waterers.
 
-Here's what it looked like at first:
+The goal of this project was to create automated weather stations and plant waterers, from many basic parts, rather then off-the-shelf devices.
 
-<img src="images/setup_early_days.jpg" alt="alt text" width="500">
- 
-As of April 5 2020:
+## Design Overview
 
-<img src="images/weather_project_5apr20.jpg" alt="alt text" width="500">
+Below is a conceptual view of this project.  The sensors take in data, display it on LCD screens and LED's, and log the data to an SD card for analysis later.  There is also a feedback loop where the moisture sensors determine when the water pump should be activated.
 
-Weather station:
+<img src="images/WeatherProject.jpg" alt="alt text" width="800">
 
-<img src="images/image0.jpeg" alt="alt text" width="500">
+As of April 9, 2020, here is what the deployed system looks like:
+
+The outdoor weather station:
+
+<img src="images/weather_station_deployed.jpg" alt="alt text" width="250">
+
+The indoor main system, along with plants and watering system:
+
+<img src="images/weather_project_apr_8.jpg" alt="alt text" width="250">
+
 
 ## Materials
 
   * Arduino Mega: https://store.arduino.cc/usa/mega-2560-r3
-  * Arduino Uno:
+  * Arduino Uno: https://store.arduino.cc/usa/arduino-uno-rev3
   * Wireless transmitters and receivers: https://www.amazon.com/Makerfire-Arduino-NRF24L01-Wireless-Transceiver/dp/B00O9O868G
   * SD Card reader: https://www.adafruit.com/product/254
 
 ### Home made moisture sensor
 
 Here's how I built this:
-The moisture sensor is very simple. It consists of two metal prongs, I use 14 baud copper wire, that are spaced a consistant distance apart and in length. One of the prongs goes straight to 5v and the other goes atraight to the chosen analog input pin, and through a 10k resistor to ground. 
+
+The moisture sensor is very simple. It consists of two metal prongs. I use 14 baud copper wire, that are spaced a consistant distance apart and in length. One of the prongs goes straight to 5v and the other goes atraight to the chosen analog input pin, and through a 10k resistor to ground. 
+
+<img src="images/moisture_sensor.jpg" alt="alt text" width="250">
+
+### Home made Wind Speed device
+
+Instead of buying an off-the-shelf device for measuring wind speed, here's how we buiilt our own:
+
+
+
+## Software
+
+### Data Aquisition
+
+Each of the *.ino files runs on a single board:
+
+  * nrf24_reliable_datagram_receiver.ino: This runs on the Arduino Mega. This code takes in input from the moisture and light sensor.  It writes the data to the Sparkfun Red board, which in turn writes the data to an SD card. This code also receives the wireless data from the weather station.  It prints out all of the data it receives to one of two LCD displays, one for the weather station and one for the "garden" station. 
+  * wire_receive.ino: This code runs on the Sparkfun RedBoard. The RedBoard is essentially an Arduino Uno (it is just produced by Sparkfun). This code receives the data written to it and then saves it to an SD card. The arduino Mega can't save the data due to limtations on the number of SPI ports it has. 
+  * nrf24_reliable_datagram_transmitter.ino: This runs on the Weather Station's Arduino Uno. This receives data from the Weather Station's various sensors and then transmits the data wirelessly to the Arduino Mega.
+  
+The *.ino files are compiled and downloaded to their target boards using the Arduino IDE.
+
+### Data Analysis
+
+plotData.py will create plots for the different sensors logged onto the SD card.  See code for installation and usage.
+Here's an example plot:
+
+
+<img src="images/Moisture 1.png" alt="alt text" width="500">
 
 ## Wiring
 
@@ -64,13 +99,8 @@ One of the prongs goes to 5v the other goes to its analog pin and, through a 10k
 The wireless nrf24 is connected to the specialty SPI pins on the Arduino Mega. 
 if the nrf24's pins were numbered as follows,
 
- ____________
-|            |
-|            |
-|            |
-|            |
-|    1 2 3 4 |
-|____5_6_7_8_|
+
+<img src="images/wiring_board.png" alt="alt text">
 
 
 Then the wiring is:
@@ -114,13 +144,9 @@ SD:  RedBoard:
 ### Weather Station
 The weather station has the same transmitter as the Arduino Mega.
 However as the Weather t=station uses an Arduino Uno not a Mega, the SPI pins are different.
-____________
-|            |
-|            |
-|            |
-|            |
-|    1 2 3 4 |
-|____5_6_7_8_|
+
+<img src="images/wiring_board.png" alt="alt text">
+
 
 
 Then the wiring is:
@@ -138,20 +164,34 @@ nrf24: Arduino:
 
 The transmitter kept getting unplugged so I soldered a small "sheild" for the Uno that holds its important wiring. This includes the wiring of the sensors and the transmitter irself. The homade anemoneter consists simply of a motor attatched to ground and an anlog pin. The enrire setup is housed in a yogurt container for wether proofing.
 
-## Software
-
-### Data Aquisition
-
-Each of the *.ino files runs on a single board:
-
-  * nrf24_reliable_datagram_receiver.ino: This runs on the Arduino Mega. This code takes in input from the moisture and light sensor. It   writes the data to the Sparkfun Red board. This code also receives the wireless data from the weather station. It prints out all of the data it receives to one of two LCD displays, one for the weather station and one for the "garden" station. 
-  * wire_receive.ino: This code runs on the Sparkfun RedBoard. The RedBoard is essentially an arduino uno it is just produced by Sparkfun. This code receives the data written to it and then saves it to an SD card. The arduino Mega can't save the data due to limtations on the number of SPI ports it has. 
-  * nrf24_reliable_datagram_transmitter.ino: This runs on the Weather Station's Arduino Uno. This receives data from the Weather Station's various sensors and the transmitts the data wirelessly to the Arduino Mega.
-  
-### Data Analysis
-
-plotData.py will create plots for the different sensors logged onto the SD card.  See code for installation and usage.
-Here's an example plot:
 
 
-<img src="images/Moisture 1.png" alt="alt text" width="500">
+## Gallery
+
+Here's what it looked like at first:
+
+<img src="images/setup_early_days.jpg" alt="alt text" width="500">
+ 
+As of April 5 2020:
+
+<img src="images/weather_project_5apr20.jpg" alt="alt text" width="500">
+
+Weather station deployed, as of April 9:
+
+<img src="images/weather_station_deployed.jpg" alt="alt text" width="500">
+
+Weather station board under construction:
+
+<img src="images/weather_board_1.jpg" alt="alt text" width="500">
+
+<img src="images/weather_board_2.jpg" alt="alt text" width="500">
+
+Here is a close up of the entire system for watering the plants, along with pumps:
+
+<img src="images/plant_system_with_pumps.jpg" alt="alt text" width="500">
+
+Here's the garden side deployed, as of April 9:
+
+<img src="images/weather_project_apr_8.jpg" alt="alt text" width="500">
+
+
