@@ -22,6 +22,7 @@ unsigned long timeSinceStart = 0;
 #define SQW_INPUT_PIN 2   // Input pin to read SQW
 #define SQW_OUTPUT_PIN 13 // LED to indicate SQW's state
 
+String fileName = "4-16-20.txt";
 void setup()
 {
   Wire.begin();                // join i2c bus as master
@@ -38,11 +39,7 @@ void setup()
   // (Pull-up resistor is required to use the SQW pin.)
   rtc.writeSQW(SQW_SQUARE_1);
 
-  // Now set the time...
-  // You can use the autoTime() function to set the RTC's clock and
-  // date to the compiliers predefined time. (It'll be a few seconds
-  // behind, but close!)
-  rtc.autoTime();
+  //Use the RTC demo software to set the time.
   rtc.set12Hour(); // Use rtc.set12Hour to set to 12-hour mode
   
   Serial.print("Initializing SD card...");
@@ -59,26 +56,31 @@ int i = 0;
 int data[8];
 void loop()
 {
-    Wire.requestFrom(9,64);
+    //request one byte of data from device 9 
+    Wire.requestFrom(9,1);
     
     while(Wire.available()){
       data[i] = Wire.read(); // receive byte as a character
-      //.print("0");
-      //Serial.println(i);
-      // make a string for assembling the data to log:
-      String dataString = "";
-    
-      // read three sensors and append to the string:
-      dataString += String(data[i]);
-       
-      // if the file is available, write to it:
-      if(data[i]  < 100){
+    }
+    //Check to make sure we have real data
+    if(data[i]  < 100){
         // open the file. note that only one file can be open at a time,
         // so you have to close this one before opening another.
-        File dataFile = SD.open("windtest.txt", FILE_WRITE);
+      
+        File dataFile = SD.open(fileName, FILE_WRITE);
+        
+        String dataString = "";
+    
+        // read three sensors and append to the string:
+        dataString += String(data[i]);
+       
       
         if (dataFile) {
           if(i == 0){           
+            rtc.update();
+            dataFile.close();
+            printTime();
+            
             dataFile.print("Light: ");
             Serial.print("Light: ");
           }
@@ -114,28 +116,76 @@ void loop()
             dataFile.println(dataString);
             Serial.println(dataString);         // print the character
           }  
-          Serial.print("i = ");
-          Serial.println(i);
+          //Serial.print("i = ");
+          //Serial.println(i);
           dataFile.close();
         }
         // if the file isn't open, pop up an error:
         else {
           Serial.println("error opening datalog.txt");
         }
-      }
-      if(data[i]==99){
-        i=7;
-      }
-      i++;
-      if(i>7){ 
-        //Serial.println("Reseting i");
-        i = 0;
-      }
-    //delay(100);
-  }
+    }
+    if(data[i]==99){
+       //Serial.println("Setting i to 7");
+       i=7;
+    }
+    i++;
+    if(i>7){ 
+      //Serial.println("Reseting i");
+      i = 0;
+    }
 }
-
+        
 void printTime()
-{ 
+{
+  File dataFile = SD.open(fileName, FILE_WRITE);
   
+  Serial.print(String(rtc.hour()) + ":"); // Print hour
+  dataFile.print(String(rtc.hour()) + ":"); // Print hour
+  
+  if (rtc.minute() < 10){
+    Serial.print('0'); // Print leading '0' for minute
+    dataFile.print('0'); // Print leading '0' for minute
+  }
+  Serial.print(String(rtc.minute()) + ":"); // Print minute
+  dataFile.print(String(rtc.minute()) + ":"); // Print minute
+  
+  if (rtc.second() < 10){
+    Serial.print('0'); // Print leading '0' for second
+    dataFile.print('0'); // Print leading '0' for second    
+  }
+  Serial.print(String(rtc.second())); // Print second
+  dataFile.print(String(rtc.second())); // Print second
+
+  if (rtc.is12Hour()) // If we're in 12-hour mode
+  {
+    // Use rtc.pm() to read the AM/PM state of the hour
+    if (rtc.pm()){ 
+      Serial.print(" PM"); // Returns true if PM
+      dataFile.print("PM");
+    }
+    else{
+      Serial.print(" AM");
+      dataFile.print(" AM");
+    }
+  }
+  
+  Serial.print(" | ");
+  dataFile.print(" | ");
+  
+  // Few options for printing the day, pick one:
+  Serial.print(rtc.dayStr()); // Print day string
+  dataFile.print(rtc.dayStr()); // Print day string
+  
+  //Serial.print(rtc.dayC()); // Print day character
+  //Serial.print(rtc.day()); // Print day integer (1-7, Sun-Sat)
+  Serial.print(" - ");
+  Serial.print(String(rtc.month()) + "/" +   // Print month
+                 String(rtc.date()) + "/");  // Print date
+  Serial.println(String(rtc.year()));        // Print year
+  dataFile.print(" - ");
+  dataFile.print(String(rtc.month()) + "/" +   // Print month
+                 String(rtc.date()) + "/");  // Print date
+  dataFile.println(String(rtc.year()));        // Print year
+  dataFile.close();
 }
