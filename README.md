@@ -194,4 +194,24 @@ Here's the garden side deployed, as of April 9:
 
 <img src="images/weather_project_apr_8.jpg" alt="alt text" width="500">
 
+Here's a series of pictures showing how the final soldering was done in mid April:
+
+<img src="images/soldering_buttons.jpg" alt="alt text" width="500">
+<img src="images/soldering1.jpg" alt="alt text" width="500">
+<img src="images/soldering2.jpg" alt="alt text" width="500">
+<img src="images/soldering3.jpg" alt="alt text" width="500">
+<img src="images/soldering4.jpg" alt="alt text" width="500">
+<img src="images/soldering5.jpg" alt="alt text" width="500">
+<img src="images/soldering6.jpg" alt="alt text" width="500">
+<img src="images/lcds_closeup.jpg" alt="alt text" width="500">
+
+Here's the final box that was made to contain the indoor station:
+
+<img src="images/finalBox.jpg" alt="alt text" width="500">
+
+And finally here's the final deployed system at the end of April:
+
+<img src="images/deploymentApr30.jpg" alt="alt text" width="500">
+<img src="images/deployment2apr30.jpg" alt="alt text" width="500">
+
 
