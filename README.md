@@ -58,10 +58,13 @@ The *.ino files are compiled and downloaded to their target boards using the Ard
 ### Data Analysis
 
 plotData.py will create plots for the different sensors logged onto the SD card.  See code for installation and usage.
-Here's an example plot:
-
+Here's one of the original an example plots:
 
 <img src="images/Moisture 1.png" alt="alt text" width="500">
+
+Now that we have time stamps we can use this information in the x-axis:
+
+<img src="images/Moisture 2.png" alt="alt text" width="500">
 
 ## Wiring
 
